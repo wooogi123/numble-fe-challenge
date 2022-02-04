@@ -3,8 +3,7 @@ import { styled } from '../../stitches.config';
 
 const Board: React.FC = () => {
 
-	return null;
+  return null;
 };
 
 export default Board;
-

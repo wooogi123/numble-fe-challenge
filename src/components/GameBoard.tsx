@@ -10,64 +10,64 @@ const getRandomItem = (len: number) => Math.floor(Math.random() * (len - 1));
 const getColor = () => Math.floor(Math.random() * 255);
 
 const generateColors = (stage: number): {
-	base: string;
-	answer: string;
+  base: string;
+  answer: string;
 } => {
-	const	r = getColor();
-	const g = getColor();
-	const b = getColor();
+  const  r = getColor();
+  const g = getColor();
+  const b = getColor();
 
-	return {
-		base: `rgb(${r}, ${g}, ${b})`,
-		answer: `rgb(${r + getTolerance(stage)}, ${g + getTolerance(stage)}, ${b + getTolerance(stage)})`
-	}
+  return {
+    base: `rgb(${r}, ${g}, ${b})`,
+    answer: `rgb(${r + getTolerance(stage)}, ${g + getTolerance(stage)}, ${b + getTolerance(stage)})`
+  }
 };
 
 const geenrateItems = (stage: number): {
-	key: string;
-	background: string;
+  key: string;
+  background: string;
 }[] => {
-	const { base, answer } = generateColors(stage);
+  const { base, answer } = generateColors(stage);
 
-	const count = getCount(stage);
+  const count = getCount(stage);
 
-	const answerIdx = getRandomItem(count);
+  const answerIdx = getRandomItem(count);
 
-	console.log(answerIdx, count);
+  console.log(answerIdx, count);
 
-	return Array(count)
-	  .fill(undefined)
-		.map((_, idx) => ({
-			key: `${idx}`,
-			background: answerIdx === idx ? answer : base,
-	  }));
+  return Array(count)
+    .fill(undefined)
+    .map((_, idx) => ({
+      key: `${idx}`,
+      background: answerIdx === idx ? answer : base,
+    }));
 };
 
 interface GameBoardProps {
-	stage: number;
+  stage: number;
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({
-	stage,
+  stage,
 }) => {
-	return (
-		<Board style={{ '--count': Math.floor(Math.sqrt(getCount(stage))) } as React.CSSProperties}>
-			{geenrateItems(stage).map(({ key, background }) => (
-				<div
-				  style={{ background }}
-					key={key}
-				/>
-			))}
-		</Board>
-	);
+  return (
+    <Board style={{ '--count': Math.floor(Math.sqrt(getCount(stage))) } as React.CSSProperties}>
+      {geenrateItems(stage).map(({ key, background }) => (
+        <div
+          style={{ background }}
+          key={key}
+        />
+      ))}
+    </Board>
+  );
 };
 
 export default React.memo(GameBoard);
 
 const Board = styled('div', {
-	width: '100%',
-	aspectRatio: '1/1',
-	display: 'grid',
-	gridTemplate: 'repeat(var(--count), 1fr) / repeat(var(--count), 1fr)',
-	gap: 8,
+  width: '100%',
+  aspectRatio: '1/1',
+  display: 'grid',
+  gridTemplate: 'repeat(var(--count), 1fr) / repeat(var(--count), 1fr)',
+  gap: 8,
 });
