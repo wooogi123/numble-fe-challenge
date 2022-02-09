@@ -6,8 +6,8 @@ import {
   GamePlate,
   GameStart,
 } from '../../components';
+import { useRequestAnimationFrame } from '../../hooks';
 import useGame from './useGame';
-import useRequestAnimationFrame from './useRequestAnimationFrame';
 
 const Game: React.FC = () => {
   const [state, dispatch] = useGame();
