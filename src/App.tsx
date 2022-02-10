@@ -23,5 +23,18 @@ const globalStyles = globalCss({
   },
   'html, body': {
     overscrollBehavior: 'none',
+    height: '100%',
+  },
+  'body': {
+    overflow: 'hidden',
+    overscrollBehavior: 'none',
+    paddingTop: 'env(safe-area-inset-top, 0)',
+    paddingRight: 'env(safe-area-inset-right, 0)',
+    paddingBottom: 'env(safe-area-inset-bottom, 0)',
+    paddingLeft: 'env(safe-area-inset-left, 0)',
+  },
+  '#root': {
+    width: '100vw',
+    height: '100%',
   },
 });
