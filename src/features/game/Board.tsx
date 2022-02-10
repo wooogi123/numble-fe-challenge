@@ -1,9 +1,71 @@
 import * as React from 'react'
-import { styled } from '../../stitches.config';
+import { GameBoard } from '../../components';
+import {
+  getItemCount,
+  getRandomNumber,
+  createGameColors,
+} from './utils';
+import { LAST_STAGE } from './constants';
 
-const Board: React.FC = () => {
+interface ClickableItem {
+  key: string;
+  background: string;
+  isAnswer: boolean;
+}
 
-  return null;
+const generateItems = (stage: number): ClickableItem[] => {
+  const colorGap = (LAST_STAGE - stage + 1) * 4;
+  const { base, answer } = createGameColors(colorGap);
+
+  const count = getItemCount(stage);
+
+  const answerIdx = getRandomNumber(count);
+
+  return Array(count)
+    .fill(undefined)
+    .map((_, idx) => ({
+      key: `${count}-${idx}`,
+      background: answerIdx === idx
+        ? answer.toString()
+        : base.toString(),
+      isAnswer: answerIdx === idx,
+    }));
 };
 
-export default Board;
+interface BoardProps {
+  stage: number;
+  onClickAnswer: () => void;
+  onClickWrongAnswer: () => void;
+}
+
+const Board: React.FC<BoardProps> = ({
+  stage,
+  onClickAnswer,
+  onClickWrongAnswer,
+}) => {
+  const itemCount = getItemCount(stage);
+  const gridItemCount = Math.floor(Math.sqrt(itemCount));
+
+  return (
+    <GameBoard
+      columnCount={gridItemCount}
+      rowCount={gridItemCount}
+    >
+      {generateItems(stage).map(({
+        key,
+        background,
+        isAnswer,
+      }) => (
+        <div
+          key={key}
+          style={{ background }}
+          onClick={isAnswer
+            ? onClickAnswer.bind(null)
+            : onClickWrongAnswer.bind(null)}
+        />
+      ))}
+    </GameBoard>
+  );
+};
+
+export default React.memo(Board);

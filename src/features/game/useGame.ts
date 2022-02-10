@@ -1,4 +1,9 @@
 import * as React from 'react';
+import {
+  INITIAL_TIME,
+  DEDUCT_TIME,
+  LAST_STAGE,
+} from './constants';
 
 const initialState: State = {
   remainingTime: 0,
@@ -6,6 +11,7 @@ const initialState: State = {
   score: 0,
   isStarted: false,
   isGameOver: false,
+  isClear: false,
 };
 
 type UseGameReturn = [
@@ -31,26 +37,53 @@ export const gameReducer: React.Reducer<State, Action> = (state, action) => {
   switch (action.type) {
     case 'init': {
       return {
-        remainingTime: 15000,
+        remainingTime: INITIAL_TIME,
         stage: 1,
         score: 0,
         isStarted: true,
         isGameOver: false,
+        isClear: false,
       };
     }
     case 'done': {
       return initialState;
     }
     case 'tick': {
-      if (state.isStarted) {
-        if (state.remainingTime <= 0) {
-          return produce(state, { isStarted: true, isGameOver: true });
-        }
+      if (!state.isStarted) return state;
 
-        return produce(state, { remainingTime: state.remainingTime - 100 });
+      if (state.remainingTime < action.payload) {
+        return produce(state, {
+          remainingTime: 0,
+          isGameOver: true,
+          isClear: false,
+        });
       }
 
-      return state;
+      const remainingTime = Math.max(Math.floor(state.remainingTime - action.payload), 0);
+      return produce(state, { remainingTime });
+    }
+    case 'nextStage': {
+      if (!state.isStarted) return state;
+      if (state.isGameOver) return state;
+      if (state.stage >= LAST_STAGE) return produce(state, { isClear: true });
+
+      return produce(state, {
+        remainingTime: INITIAL_TIME,
+        stage: state.stage + 1,
+        score: Math.pow(state.stage, 3) * state.remainingTime,
+      });
+    }
+    case 'deduct': {
+      if (!state.isStarted) return state;
+      if (state.isGameOver) return state;
+
+      if (state.remainingTime < DEDUCT_TIME) {
+        return produce(state, { remainingTime: 0, isGameOver: true });
+      }
+
+      return produce(state, {
+        remainingTime: state.remainingTime - DEDUCT_TIME,
+      });
     }
     default: {
       throw new Error('invalid action');
@@ -64,12 +97,15 @@ interface State {
   score: number;
   isStarted: boolean;
   isGameOver: boolean;
+  isClear: boolean;
 }
 
 type Action =
   | { type: 'init' }
   | { type: 'done' }
-  | { type: 'tick' }
+  | { type: 'tick', payload: number }
+  | { type: 'nextStage' }
+  | { type: 'deduct' }
 ;
 
 const produce = <S>(state: S, newState: Partial<S>): S =>

@@ -8,11 +8,11 @@ export default GamePlate;
 
 const Plate = styled('div', {
   padding: 16,
-  background: 'rgba(235, 235, 235, 0.24)',
+  background: 'rgba(235, 235, 235, 0.48)',
   borderRadius: 16,
   boxShadow: '0 4px 24px rgba(51, 51, 51, 0.36)',
   backdropFilter: 'blur(4px)',
-  border: '1px solid rgba(235, 235, 235, 0.24)',
+  border: '1px solid rgba(235, 235, 235, 0.48)',
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',

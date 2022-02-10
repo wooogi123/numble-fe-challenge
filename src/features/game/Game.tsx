@@ -1,12 +1,11 @@
 import * as React from 'react';
-// import { styled } from '../../stitches.config';
 import {
-  GameBoard,
   GameHeader,
   GamePlate,
   GameStart,
 } from '../../components';
 import { useRequestAnimationFrame } from '../../hooks';
+import Board from './Board';
 import useGame from './useGame';
 
 const Game: React.FC = () => {
@@ -14,7 +13,7 @@ const Game: React.FC = () => {
 
   const isStarted = React.useMemo(() => state.isStarted, [state]);
   const isGameOver = React.useMemo(() => state.isGameOver, [state]);
-  const stage = React.useMemo(() => state.stage, [state]);
+  const isClear = React.useMemo(() => state.isClear, [state]);
 
   const handleClickStart = React.useCallback(() => {
     dispatch({ type: 'init' });
@@ -22,21 +21,26 @@ const Game: React.FC = () => {
 
   const elapsedTime = React.useRef<number>(0);
 
-  const runTick = React.useCallback(() => {
-    dispatch({ type: 'tick' });
-  }, [dispatch]);
-
   useRequestAnimationFrame((deltaTime) => {
     if (!isStarted) return;
     if (isGameOver) return;
+    if (isClear) return;
 
     elapsedTime.current += deltaTime;
 
     if (elapsedTime.current >= 100) {
+      dispatch({ type: 'tick', payload: elapsedTime.current });
       elapsedTime.current = 0;
-      runTick();
     }
   }, [isStarted, isGameOver]);
+
+  const handleClickAnswer = React.useCallback(() => {
+    dispatch({ type: 'nextStage' });
+  }, [dispatch]);
+
+  const handleClickWrongAnswer = React.useCallback(() => {
+    dispatch({ type: 'deduct' });
+  }, [dispatch]);
 
   if (!isStarted) {
     return (
@@ -46,15 +50,30 @@ const Game: React.FC = () => {
     );
   }
 
+  if (isClear) {
+    return (
+      <GamePlate>
+        <GameHeader
+          stage={state.stage}
+          time={state.remainingTime}
+          score={state.score}
+        />
+      </GamePlate>
+    );
+  }
+
   return (
     <GamePlate>
       <GameHeader
-        isGameOver={isGameOver}
-        stage={stage}
+        stage={state.stage}
         time={state.remainingTime}
         score={state.score}
       />
-      <GameBoard stage={stage} />
+      <Board
+        stage={state.stage}
+        onClickAnswer={handleClickAnswer}
+        onClickWrongAnswer={handleClickWrongAnswer}
+      />
     </GamePlate>
   );
 };
