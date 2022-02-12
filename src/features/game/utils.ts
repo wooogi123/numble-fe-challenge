@@ -58,3 +58,6 @@ export const createGameColors = (gap: number): {
 
   return { base, answer };
 };
+
+export const produce = <S>(state: S, newState: Partial<S>): S =>
+  ({ ...state, ...newState });

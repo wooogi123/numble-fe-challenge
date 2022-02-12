@@ -4,35 +4,18 @@ import {
   GamePlate,
   GameStart,
 } from '../../components';
-import { useRequestAnimationFrame } from '../../hooks';
 import Board from './Board';
 import useGame from './useGame';
 
 const Game: React.FC = () => {
-  const [state, dispatch] = useGame();
+  const { state, dispatch } = useGame();
 
   const isStarted = React.useMemo(() => state.isStarted, [state]);
-  const isGameOver = React.useMemo(() => state.isGameOver, [state]);
   const isClear = React.useMemo(() => state.isClear, [state]);
 
   const handleClickStart = React.useCallback(() => {
     dispatch({ type: 'init' });
   }, [dispatch]);
-
-  const elapsedTime = React.useRef<number>(0);
-
-  useRequestAnimationFrame((deltaTime) => {
-    if (!isStarted) return;
-    if (isGameOver) return;
-    if (isClear) return;
-
-    elapsedTime.current += deltaTime;
-
-    if (elapsedTime.current >= 100) {
-      dispatch({ type: 'tick', payload: elapsedTime.current });
-      elapsedTime.current = 0;
-    }
-  }, [isStarted, isGameOver]);
 
   const handleClickAnswer = React.useCallback(() => {
     dispatch({ type: 'nextStage' });
