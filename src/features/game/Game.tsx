@@ -3,6 +3,7 @@ import {
   GameHeader,
   GamePlate,
   GameStart,
+  GameDone,
 } from '../../components';
 import Board from './Board';
 import useGame from './useGame';
@@ -12,6 +13,7 @@ const Game: React.FC = () => {
 
   const isStarted = React.useMemo(() => state.isStarted, [state]);
   const isClear = React.useMemo(() => state.isClear, [state]);
+  const isGameOver = React.useMemo(() => state.isGameOver, [state]);
 
   const handleClickStart = React.useCallback(() => {
     dispatch({ type: 'init' });
@@ -41,8 +43,28 @@ const Game: React.FC = () => {
           time={state.remainingTime}
           score={state.score}
         />
+        <GameDone
+          onClickRestart={handleClickStart}
+          title={'game clear'}
+        />
       </GamePlate>
     );
+  }
+
+  if (isGameOver) {
+    return (
+      <GamePlate>
+        <GameHeader
+          stage={state.stage}
+          time={state.remainingTime}
+          score={state.score}
+        />
+        <GameDone
+          onClickRestart={handleClickStart}
+          title={'game over'}
+        />
+      </GamePlate>
+    )
   }
 
   return (

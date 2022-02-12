@@ -66,20 +66,6 @@ const gameReducer: React.Reducer<State, Action> = (state, action) => {
 	}
 };
 
-type UseGameReturn = [
-	state: State,
-	dispatch: (action: Action) => void,
-];
-
-const useGameReducer = (): UseGameReturn => {
-	const [state, _dispatch] = React.useReducer(gameReducer, INITIAL_STATE);
-
-	const dispatch = React.useCallback(
-		(action: Action) => _dispatch(action),
-		[_dispatch]
-	);
-
-	return [state, dispatch];
-};
+const useGameReducer = () => React.useReducer(gameReducer, INITIAL_STATE);
 
 export default useGameReducer;

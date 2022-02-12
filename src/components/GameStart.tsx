@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { styled } from '../stitches.config';
+import GameButton from './GameButton';
 
 interface GameStartProps {
   onClick: () => void;
@@ -9,9 +10,7 @@ const GameStart: React.FC<GameStartProps> = ({
   onClick,
 }) => (
   <Container>
-    <Button onClick={onClick}>
-      <StartTypo>game start</StartTypo>
-    </Button>
+    <GameButton onClick={onClick}>game start</GameButton>
   </Container>
 );
 
@@ -28,22 +27,4 @@ const Container = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-});
-
-const Button = styled('button', {
-  padding: 16,
-  background: 'rgba(235, 235, 235, 0.24)',
-  borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(51, 51, 51, 0.36)',
-  backdropFilter: 'blur(4px)',
-  border: '1px solid rgba(235, 235, 235, 0.24)',
-});
-
-const StartTypo = styled('span', {
-  fontFamily: '$default',
-  fontSize: 32,
-  fontWeight: '$2',
-  lineHeight: 1.4,
-  color: '$veryPeri',
-  textTransform: 'uppercase',
 });

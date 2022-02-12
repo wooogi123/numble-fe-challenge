@@ -20,10 +20,7 @@ const useGame = () => {
     }
   }, [state]);
 
-  return {
-    state,
-    dispatch
-  };
+  return { state, dispatch };
 };
 
 export default useGame;

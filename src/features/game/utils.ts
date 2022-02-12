@@ -1,20 +1,27 @@
 export const getItemCount = (base: number) =>
   Math.pow(Math.round((base + 0.5) / 2) + 1, 2);
 
-export const getColor = () => Math.floor(Math.random() * 255);
-
 export const getRandomNumber = (len: number) =>
   Math.floor(Math.random() * (len - 1));
+
+export const getColor = () => Math.floor(Math.random() * 255);
+
+const MAX_HEX = 235;
+const MIN_HEX = 51;
 
 class RGBColor {
   r: number;
   g: number;
   b: number;
 
-  constructor(r: number, g: number, b: number) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
+  constructor(r?: number, g?: number, b?: number) {
+    this.r = r ?? this.getHex();
+    this.g = g ?? this.getHex();
+    this.b = b ?? this.getHex();
+  }
+
+  getHex() {
+    return Math.floor((Math.random() * (MAX_HEX - MIN_HEX + 1)) + MIN_HEX);
   }
 
   copy() {
@@ -23,13 +30,13 @@ class RGBColor {
 
   setTolerance(gap: number) {
     if (Math.random() >= 0.5) {
-      this.r = Math.min(this.r + gap, 255);
-      this.g = Math.min(this.g + gap, 255);
-      this.b = Math.min(this.b + gap, 255);
+      this.r = Math.min(this.r + gap, MAX_HEX);
+      this.g = Math.min(this.g + gap, MAX_HEX);
+      this.b = Math.min(this.b + gap, MAX_HEX);
     } else {
-      this.r = Math.max(this.r - gap, 0);
-      this.g = Math.max(this.g - gap, 0);
-      this.b = Math.max(this.b - gap, 0);
+      this.r = Math.max(this.r - gap, MIN_HEX);
+      this.g = Math.max(this.g - gap, MIN_HEX);
+      this.b = Math.max(this.b - gap, MIN_HEX);
     }
   }
 
@@ -38,15 +45,7 @@ class RGBColor {
   }
 }
 
-export const createColor = (): RGBColor => {
-  const color = new RGBColor(
-    getColor(),
-    getColor(),
-    getColor(),
-  );
-
-  return color;
-};
+export const createColor = () => new RGBColor();
 
 export const createGameColors = (gap: number): {
   base: RGBColor;

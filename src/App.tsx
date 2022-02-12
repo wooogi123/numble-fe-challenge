@@ -37,4 +37,7 @@ const globalStyles = globalCss({
     width: '100vw',
     height: '100%',
   },
+  'span': {
+    userSelect: 'none',
+  }
 });

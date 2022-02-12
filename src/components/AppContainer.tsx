@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { styled } from '../stitches.config';
 
-import Image640x960 from '../assets/img/bg@640x960.jpg';
-import Image960x1440 from '../assets/img/bg@960x1440.jpg';
-import Image1440x2160 from '../assets/img/bg@1440x2160.jpg';
-import Image1920x2880 from '../assets/img/bg@1920x2880.jpg';
-import Image2400x3600 from '../assets/img/bg@2400x3600.jpg';
+import Image640x960 from '../assets/img/type1-bg@640x960.jpg';
+import Image960x1440 from '../assets/img/type1-bg@960x1440.jpg';
+import Image1440x2160 from '../assets/img/type1-bg@1440x2160.jpg';
+import Image1920x2880 from '../assets/img/type1-bg@1920x2880.jpg';
+import Image2400x3600 from '../assets/img/type1-bg@2400x3600.jpg';
 
 const AppContainer: React.FC = ({ children }) =>
   (

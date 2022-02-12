@@ -60,8 +60,8 @@ const Board: React.FC<BoardProps> = ({
           key={key}
           style={{ background }}
           onClick={isAnswer
-            ? onClickAnswer.bind(null)
-            : onClickWrongAnswer.bind(null)}
+            ? onClickAnswer
+            : onClickWrongAnswer}
         />
       ))}
     </GameBoard>
