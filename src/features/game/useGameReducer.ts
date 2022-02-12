@@ -1,15 +1,15 @@
 import * as React from 'react'
 import { produce } from './utils';
 import {
-	INITIAL_TIME,
-	LAST_STAGE,
-	DEDUCT_TIME,
-	INITIAL_STATE,
+  INITIAL_TIME,
+  LAST_STAGE,
+  DEDUCT_TIME,
+  INITIAL_STATE,
 } from './constants';
 import type { State, Action } from './types';
 
 const gameReducer: React.Reducer<State, Action> = (state, action) => {
-	switch (action.type) {
+  switch (action.type) {
     case 'init': {
       return {
         remainingTime: INITIAL_TIME,
@@ -21,7 +21,7 @@ const gameReducer: React.Reducer<State, Action> = (state, action) => {
       };
     }
     case 'done': {
-			return INITIAL_STATE;
+      return INITIAL_STATE;
     }
     case 'tick': {
       if (!state.isStarted) return state;
@@ -63,7 +63,7 @@ const gameReducer: React.Reducer<State, Action> = (state, action) => {
     default: {
       throw new Error('invalid action');
     }
-	}
+  }
 };
 
 const useGameReducer = () => React.useReducer(gameReducer, INITIAL_STATE);
